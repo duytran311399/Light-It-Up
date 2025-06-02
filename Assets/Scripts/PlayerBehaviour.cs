@@ -63,9 +63,9 @@ public class PlayerBehaviour : MonoBehaviour
         _rigidbody.gravityScale = 0;
         speedScaler = 1;
     }
-    public void UpSpeedPlayer(float speedScaler)
+    public void UpdateSpeed(float speedScaler)
     {
-        _rigidbody.gravityScale = _gravity + speedScaler - 1;
+        _rigidbody.gravityScale = Mathf.Clamp(speedScaler, 1, 10);
         this.speedScaler = speedScaler / _gravity + 1;
     }
     public void ResetPlayer()

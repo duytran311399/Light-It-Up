@@ -14,6 +14,8 @@ public class GameController : MonoBehaviour
 
     public float speedScaler = 1;
     [Header("Flatform")]
+    [SerializeField] int maxFlatform = 4;
+    private int countFlatform;
     [SerializeField] GameObject[] flatformPrefabs;
 
     public EffectsImpactPool impactPool;
@@ -39,6 +41,8 @@ public class GameController : MonoBehaviour
         GameAction.OnGameOver += GameOver;
         GameAction.OnResetLevel += StartNewGame;
         GameAction.OnStartGame += StartNewGame;
+        GameAction.a_SpawnFlatform += OnSpawnFlatform;
+        GameAction.a_DeSpawnFlatform += OnDeSpawnFlatform;
     }
     private void OnDisable()
     {
@@ -46,6 +50,8 @@ public class GameController : MonoBehaviour
         GameAction.OnGameOver -= GameOver;
         GameAction.OnResetLevel -= StartNewGame;
         GameAction.OnStartGame -= StartNewGame;
+        GameAction.a_SpawnFlatform -= OnSpawnFlatform;
+        GameAction.a_DeSpawnFlatform -= OnDeSpawnFlatform;
     }
     public void StartNewGame()
     {
@@ -57,16 +63,33 @@ public class GameController : MonoBehaviour
     {
         while (true)
         {
-            float duration = UnityEngine.Random.Range(0.5f / speedScaler, 1.25f / speedScaler);
-            GameObject flatform = flatformPrefabs[Random.Range(0, flatformPrefabs.Length)];
-            if(flatform.TryGetComponent<FlatformBehaviour>(out var flatformBehaviour))
+            if(countFlatform < maxFlatform)
             {
-                float randX = UnityEngine.Random.Range(-1.25f, 1.25f);
-                Vector3 posSpawn = new Vector3(randX, spawnPos.y, 1);
-                flatformBehaviour.SpawnFlatform(posSpawn, Quaternion.identity);
+                GameObject flatform = flatformPrefabs[Random.Range(0, flatformPrefabs.Length)];
+                if (flatform.TryGetComponent<FlatformBehaviour>(out var flatformBehaviour))
+                {
+                    float randX = UnityEngine.Random.Range(-1.25f, 1.25f);
+                    Vector3 posSpawn = new Vector3(randX, spawnPos.y, 1);
+                    flatformBehaviour.SpawnFlatform(posSpawn, Quaternion.identity);
+                }
+                float duration = UnityEngine.Random.Range(0.5f / speedScaler, 1.25f / speedScaler);
+                yield return new WaitForSeconds(duration);
             }
-            yield return new WaitForSeconds(duration);
+            else
+            {
+                yield return null;
+            }
         }
+    }
+    void OnSpawnFlatform()
+    {
+        countFlatform++;
+        Debug.Log("Spawn: " + countFlatform);
+    }
+    void OnDeSpawnFlatform()
+    {
+        countFlatform--;
+        Debug.Log("DeSpawn: " + countFlatform);
     }
     void SpawnFlatformStart()
     {
@@ -103,7 +126,7 @@ public class GameController : MonoBehaviour
     void UpdateSpeedScaler()
     {
         speedScaler++;
-        player.UpSpeedPlayer(speedScaler);
+        player.UpdateSpeed(speedScaler);
     }
     void OnChangerStateGame(StateGame state)
     {

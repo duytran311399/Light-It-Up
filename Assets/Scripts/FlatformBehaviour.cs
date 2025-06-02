@@ -58,6 +58,7 @@ public class FlatformBehaviour : MonoBehaviour
     }
     public void SpawnFlatform(Vector3 pos, Quaternion rot)
     {
+        GameAction.a_SpawnFlatform?.Invoke();
         SimplePool.Spawn(transform.gameObject, pos, rot);
         //MoveToUp(pos.y);
     }
@@ -67,6 +68,7 @@ public class FlatformBehaviour : MonoBehaviour
     }
     public void DeSpawnFlatform()
     {
+        GameAction.a_DeSpawnFlatform?.Invoke();
         SimplePool.Despawn(this.gameObject);
         ResetFlatform();
     }

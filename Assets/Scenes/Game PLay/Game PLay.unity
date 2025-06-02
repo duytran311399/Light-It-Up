@@ -2302,6 +2302,7 @@ MonoBehaviour:
   stateGame: 0
   player: {fileID: 1849949021}
   speedScaler: 1
+  maxFlatform: 4
   flatformPrefabs:
   - {fileID: 942872226065456915, guid: 674771252c324df418a143d85b047591, type: 3}
   - {fileID: 942872226065456915, guid: 68bd8c0b0ce2a744fa81887dcd03553a, type: 3}
@@ -2887,7 +2888,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: fff2c04d67a4901419248bec972abbac, type: 3}
     volume: 0.5
     pitch: 1
-    loop: 0
+    loop: 1
     source: {fileID: 0}
   - name: BGGamePlay
     clip: {fileID: 8300000, guid: c32cf836d6bec76489e0b322f79cf61e, type: 3}

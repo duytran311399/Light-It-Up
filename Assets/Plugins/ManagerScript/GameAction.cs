@@ -12,4 +12,7 @@ public static class GameAction
     public static Action OnGameOver;
     public static Action OnResetLevel;
     public static Action<Vector2> OnClick;
+
+    public static Action a_SpawnFlatform;
+    public static Action a_DeSpawnFlatform;
 }
